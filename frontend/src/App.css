@@ -1,0 +1,32 @@
+
+.App > .container-home{
+    display: grid;
+    color: white;
+    margin: 20%;
+    margin-left: 25%;
+    margin-top: 15%;;
+    border: 1px solid white;
+    padding: 10%;
+    font-size: large;
+    grid-template-rows: 40% 30% 30%;
+    grid-row-gap: 20%;
+}
+
+
+.container-home > .row > a{
+    color: black;
+    display: inline-block;
+    background-color: gray;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 20%;
+    border: 1px solid red;
+    width: 80%;
+    padding: 5%;
+}
+
+.container-home > .row > a:hover{
+    background-color: blue;
+    color: white;
+
+}
