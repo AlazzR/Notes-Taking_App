@@ -7,6 +7,8 @@
     margin-top: 15%;;
     border: 1px solid white;
     padding: 10%;
+    padding-top: 20%;
+    padding-bottom: 20%;
     font-size: large;
     grid-template-rows: 40% 30% 30%;
     grid-row-gap: 20%;

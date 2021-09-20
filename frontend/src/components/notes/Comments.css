@@ -1,0 +1,31 @@
+.comment-container{
+    display: grid;
+    height: 300px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5px;
+    padding-top: 2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-bottom: 20px;
+
+    border: 1px solid black;
+    background-color: gainsboro;
+}
+
+.new-comment{
+    display: block;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.new-comment > form > textarea{
+    width: 100%;
+    resize: none;
+    scroll-behavior: smooth;
+    overflow: scroll;
+}
+
+.new-comment > form > button{
+    margin-left: 40%;
+}

@@ -1,0 +1,7 @@
+.navbar-bar{
+    display: grid;
+    grid-template-columns: 90% 30%;
+    background-color: black;
+    color: white;
+    padding: 20px;
+}

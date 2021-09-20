@@ -1,0 +1,27 @@
+#new-note{
+    margin-left: 20%;
+    margin-right: 20%;
+    padding: 5%;
+    border: 1px solid black;
+}
+.error-new-note{
+    font-size: 8px;
+    border: 1px solid red;
+    background-color: beige;
+    padding: 5px;
+    text-align: center;
+}
+
+.counter-char{
+    font-size: 8px;
+    margin-left: 80%;
+    font-style: italic;
+    margin-top: 0px;
+}
+
+#show-more{
+    margin-left: 40%;
+}
+#show-more:hover{
+    background-color: green;
+}

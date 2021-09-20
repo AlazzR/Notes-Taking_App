@@ -3,17 +3,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import "./App.css";
 import { fancyBody } from './body_style';
+
 const App: React.FC = ()=> {
   fancyBody();
 
-  const foo = ()=>{
-    axios({
-      method: "GET",
-      url: "http://localhost:5000"
-    }).then(res => console.log(res.data)).catch(err => console.log(err));
-  }
-  foo();
-  
   return (
     <div className="App">
         <div className="container-home">

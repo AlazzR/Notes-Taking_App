@@ -1,0 +1,27 @@
+.note-struct{
+    border: 1px solid black;
+    padding: 5%;
+    background-color: beige;
+}
+
+.note-hooks{
+    margin-left: 40%;
+    width: 100px;
+    margin-bottom: 1%;
+}
+
+.note-hooks:hover{
+    background-color: red;
+}
+
+.delete-note{
+    margin-left: 90%;
+    border: none;
+    padding: 0%;
+    background: none; 
+    color: red;
+}
+
+.delete-note:hover{
+    color: black;
+}

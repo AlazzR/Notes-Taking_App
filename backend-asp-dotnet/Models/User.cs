@@ -29,6 +29,8 @@ namespace backend_asp_dotnet.Models {
         [ValidateDoB]
         public DateTime Dob { get; set; }
         
+        public ICollection<Note> Notes { get; set; }
+        public Token Token { get; set; }
         public User() {}
 
     }

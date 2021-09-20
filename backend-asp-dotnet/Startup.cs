@@ -1,4 +1,5 @@
 using backend_asp_dotnet.Data;
+using backend_asp_dotnet.Hubs;
 using backend_asp_dotnet.Services;
 using backend_asp_dotnet.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,9 +40,12 @@ namespace backend_asp_dotnet {
                    builder => {
                        builder.WithOrigins("http://localhost:3000")
                            .AllowAnyHeader()
-                           .AllowAnyMethod();
+                           .AllowAnyMethod()
+                           .AllowCredentials();
                    });
             });
+
+            services.AddSignalR();
             //Allow JWT tokenization
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
@@ -61,6 +65,12 @@ namespace backend_asp_dotnet {
             //Databases services
             InitializeDb(Configuration, services);
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<INoteRepo, NoteRepo>();
+            services.AddScoped<ITokenRepo, TokenRepo>();
+            services.AddScoped<ICommentHub, CommentsHub>();
+            services.AddScoped<ICommentRepo, CommentRepo>();
+
+
             /*
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend_asp_dotnet", Version = "v1" });
@@ -90,6 +100,7 @@ namespace backend_asp_dotnet {
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
+                endpoints.MapHub<CommentsHub>("/user/notes/comments");
             });
         }
     }

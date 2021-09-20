@@ -1,27 +1,33 @@
 import React from "react";
-import { defualtBody } from '../../body_style';
+import { defualtBody, fancyBody } from '../../body_style';
 import * as Validation from "../../utility/access";
+import "./Sign-up.css";
+import axios from "axios";
+import CONFIG from "../../dev.config";
+import { Link } from "react-router-dom";
 
 type display = "block" | "none";
 
 const SignUp: React.FC = ()=>{
-    defualtBody();
-    //username, email, password, dob.
+    fancyBody();
+    //Entries refrences
     const username = React.useRef<HTMLInputElement>(null);
     const email = React.useRef<HTMLInputElement>(null);
     const password = React.useRef<HTMLInputElement>(null);
     const dob = React.useRef<HTMLInputElement>(null);
-
+    //helper states
     const [usernameHelper, setUsername] = React.useState<boolean>(false);
     const [emailHelper, setEmail] = React.useState<boolean>(false);
     const [passwordHelper, setPassword] = React.useState<boolean>(false);
+    const [dobHelper, setDobHelper] = React.useState<boolean>(false);
+
     const [submit, setSubmit] = React.useState<boolean>(false);
     const [errorMessages, setErrorMessages] = React.useState<Array<display>>( new Array
         (3).fill("none"));
     
-    const ChangeErrorState: (ind: number, flag: boolean) => void = (ind, flag)=>{
+    const changeErrorState: (ind: number, flag: boolean) => void = (ind, flag)=>{
        const tmp = [...errorMessages];
-       console.log(flag)
+       //console.log(flag)
        if(flag)
             tmp[ind] = "none";
        else
@@ -30,74 +36,116 @@ const SignUp: React.FC = ()=>{
         //errorMessages.forEach(item => console.log(item))
     }
     
-    const HandleInputChanges: (ind: number)=>void =(ind)=>{
+    const handleInputChanges: (ind: number)=>void =(ind)=>{
         if(ind === 0)
-            ChangeErrorState(0, Validation.CheckUsernameValidity(username.current!.value));
+            changeErrorState(0, Validation.checkUsernameValidity(username.current!.value));
 
         if(ind === 1)
-            ChangeErrorState(1, Validation.CheckEmailValidity(email.current!.value));
+            changeErrorState(1, Validation.checkEmailValidity(email.current!.value));
         
         if(ind === 2)
-            ChangeErrorState(2, Validation.CheckPasswordValidity(password.current!.value));
+            changeErrorState(2, Validation.checkPasswordValidity(password.current!.value));
 
     }
-
-    const handleSubmit: (event: React.FormEvent<HTMLFormElement>)=> void = (event)=>{
+    const handleDoBChange = ()=>{
+        if(dob!.current!.value.length > 0)
+            setDobHelper(true);
+        else
+            setDobHelper(false);
+    }
+    const handleSubmit: (event: React.FormEvent<HTMLFormElement>)=> void = async (event)=>{
         event.preventDefault();
         //submit information to the backend side.
-        console.log(username.current!.value);
-        console.log(email.current!.value);
-        console.log(password.current!.value);
-        console.log(dob.current!.value);
+        //console.log(username.current!.value);
+        //console.log(email.current!.value);
+        //console.log(password.current!.value);
+        //console.log(dob.current!.value);
+        try{
+            const res = await axios({
+                method: "POST",
+                url: CONFIG.backend_asp + "/sign-up",
+                data:{
+                    username: username.current!.value,
+                    password: password.current!.value,
+                    email: email.current!.value,
+                    dob: dob.current!.value
+    
+                }
+            });
+            if(res.status === 201){
+                localStorage.setItem(CONFIG.tokenName, res.data.token);
+                window.location.href = "/users";
+            }
+        }catch(err){
+            alert(err);
+        }
     }
 
     React.useEffect(()=>{
-        console.log("************")
-        if(Validation.CheckUsernameValidity(username.current!.value))
+        if(Validation.checkUsernameValidity(username.current!.value))
             setUsername(true);
         else
             setUsername(false);
 
-        if(Validation.CheckPasswordValidity(password.current!.value))
+        if(Validation.checkPasswordValidity(password.current!.value))
             setPassword(true);
         else
             setPassword(false);
 
-        if(Validation.CheckEmailValidity(email.current!.value))
+        if(Validation.checkEmailValidity(email.current!.value))
             setEmail(true);
         else
             setEmail(false);
 
-        if(usernameHelper && passwordHelper && emailHelper && dob.current!.value !== null)
+        if(usernameHelper && passwordHelper && emailHelper && dobHelper)
             setSubmit(true);
         else
             setSubmit(false);
-    }, [errorMessages, usernameHelper, emailHelper, passwordHelper]);
+    }, [errorMessages, usernameHelper, emailHelper, passwordHelper, dobHelper]);
 
 
     return(
         <div >        
-            <div>
-                <div >
-                    Please fill up the following information:-
+            <div id="container-signup">
+                <div className="row">
+                    Please fill up the following information, if you already have an account please <Link to="/sign-in">sign-in</Link>:-
                 </div>
-                <div >
+                <div className="row">
                     <form onSubmit={handleSubmit}>
-                        <label>Please enter your username:-</label>
-                        <input type="text" ref={username} placeholder="Enter your username" onChange={() =>HandleInputChanges(0)}></input>
-                        <p style={{display: errorMessages[0]}}>Please make sure that the username is between 8-28 characters.</p>
+                        <div className="user-entry">
+                            <label>Username</label>
+                            <div>
+                                <input type="text" ref={username} placeholder="Enter your username" onChange={() =>handleInputChanges(0)}></input>
+                                <p className="error-user-entry" style={{display: errorMessages[0]}}>Please make sure that the username is between 8-28 characters and no spaces.</p>
+                            </div>
+                        </div>
                         <br/>
-                        <label htmlFor="email">Please enter your email:-</label>
-                        <input type="text" ref={email} placeholder="Enter your email" onChange={() =>HandleInputChanges(1)}></input>
-                        <p style={{display: errorMessages[1]}}>Please make sure that the email is valid(@gmail.com, @hotmail.com or @windowslive.com).</p>
+                        <div className="user-entry">
+                            <label htmlFor="email">Email</label>
+                            <div>
+                                <input type="text" ref={email} placeholder="Enter your email" onChange={() =>handleInputChanges(1)}></input>
+                                <p className="error-user-entry" style={{display: errorMessages[1]}}>Please make sure that the email is valid(@gmail.com, @hotmail.com or @windowslive.com).</p>
+                            </div>
+                        </div>
                         <br/>
-                        <label htmlFor="password">Please enter your password:-</label>
-                        <input type="password" ref={password} onChange={() =>HandleInputChanges(2)} placeholder="Enter your password"></input>
-                        <p style={{display: errorMessages[2]}}>Please make sure that the password is of atleast 10 character in length, containes a number and one of the following characters:- @, #, *, or &</p>
+
+                        <div className="user-entry">
+                            <label htmlFor="password">Password</label>
+                            <div>
+                                <input type="password" ref={password} onChange={() =>handleInputChanges(2)} placeholder="Enter your password"></input>
+                                <p className="error-user-entry" style={{display: errorMessages[2]}}>Please make sure that the password is of atleast 10 character in length, containes a number and one of the following characters:- @, #, *, or &</p>
+                            </div>
+                        </div>
                         <br/>
-                        <label htmlFor="username">Please enter your Date of birth:-</label>
-                        <input type="date" ref={dob} placeholder="Enter your username" min="1990-01-01" max={new Date().toISOString().split("T")[0]}></input>
-                        <button type="submit" disabled={!submit}>Submit</button>
+
+                        <div className="user-entry">
+                            <label htmlFor="dob">Date of birth</label>
+                            <div>
+                                <input type="date" ref={dob} placeholder="Enter your username" min="1990-01-01" max={new Date().toISOString().split("T")[0]} style={{width: "75%"}} onChange={handleDoBChange}></input>
+                            </div>
+                        </div>
+
+                        <button type="submit" disabled={!submit} style={{marginLeft: "40%", marginTop: "10%"}}>Submit</button>
                     </form>
                 </div>
             </div>

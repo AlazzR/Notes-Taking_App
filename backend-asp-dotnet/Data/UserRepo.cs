@@ -35,10 +35,12 @@ namespace backend_asp_dotnet.Data {
         }
 
         public string SignUpUsers(UserSignUp user) {
-            User exists = this._context.Users.Where(u => u.Username == user.Username || u.Email == user.Email)
+            User exists = this._context.Users
+                .Where(u => u.Username == user.Username || u.Email == user.Email)
                 .ToList().DefaultIfEmpty(null).FirstOrDefault();
             if (exists != null)
                 throw new Exception("This user already exists");
+
             string hashed = AuthenticationElements.HashPassword(this.configuration, user.Password);
             string token = AuthenticationElements.GenerateToken(configuration, user.Username, DateTime.Now);
 

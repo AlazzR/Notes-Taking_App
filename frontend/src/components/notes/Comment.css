@@ -1,0 +1,16 @@
+.delete-comment{
+    display: block;
+    margin-left: 90%;
+    color: red;
+    background-color: gray;
+}
+.delete-comment:hover{
+    color: black;
+    background-color: red;
+}
+
+.comment{
+    margin-left: 10%;
+    margin-right: 10%;
+
+}
