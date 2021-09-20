@@ -1,6 +1,6 @@
 # Notes-Taking_App
 
-I am almost finished with this project but I want still to add the following features:-
+I am almost finished with this project but I still want to add the following features:-
 
 	* Allow real time communication using SignalR between the users when they interact with each others in the comments and notes section.
 	* To make the frontend more aesthetically pleasing.
