@@ -1,6 +1,7 @@
 # Notes-Taking_App
 
 I am almost finished with this project but I want still to add the following features:-
+
 	* Allow real time communication using SignalR between the users when they interact with other users in the comment and note section.
 	* To make the frontend more aesthetically pleasing.
 	* To allow users to upload their profile images.
